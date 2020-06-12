@@ -86,7 +86,6 @@ namespace WebApp.Controllers
             return View(product);
         }
 
-        // POST: Students/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
