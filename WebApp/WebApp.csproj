@@ -179,6 +179,7 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Models\" />
+    <Folder Include="NewFolder1\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />
@@ -197,6 +198,10 @@
     <ProjectReference Include="..\Domain.Model\Domain.Model.csproj">
       <Project>{68538186-F1DF-456B-8F60-883204D344B2}</Project>
       <Name>Domain.Model</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Infrastructure.DataBase\Infrastructure.DataBase.csproj">
+      <Project>{9d9b7a4f-142f-4808-a760-1e0a18f3ac91}</Project>
+      <Name>Infrastructure.DataBase</Name>
     </ProjectReference>
     <ProjectReference Include="..\Infrastructure.EntityFramework\Infrastructure.EntityFramework.csproj">
       <Project>{E0FE3754-07DD-4F39-BE8E-EE9874A5D07E}</Project>
