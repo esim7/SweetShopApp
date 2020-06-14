@@ -23,7 +23,7 @@ namespace WebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Order order = context.Orders.Find(id);
+            Order order = context.Orders.Include(o => o.Customer).FirstOrDefault(s => s.Id == id);
             if (order == null)
             {
                 return HttpNotFound();

@@ -23,7 +23,7 @@ namespace WebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            OrderDetail orderDetail = context.OrderDetails.Find(id);
+            OrderDetail orderDetail = context.OrderDetails.Include(o => o.Product).Include(x => x.Order).FirstOrDefault(s => s.Id == id);
             if (orderDetail == null)
             {
                 return HttpNotFound();
