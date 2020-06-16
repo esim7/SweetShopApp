@@ -14,13 +14,12 @@ namespace WebApp.Controllers
 {
     public class ProductController : Controller
     {
-        private IRepository<Product> _repository;
-
+        private readonly EFUnitOfWork _uow;
         public ProductController()
         {
-            _repository = new ProductsRepository();
+            _uow = new EFUnitOfWork();
         }
-        public ActionResult Index() => View(_repository.GetAll());
+        public ActionResult Index() => View(_uow.Products.GetAll());
 
         //public ActionResult Details(int? id)
         //{

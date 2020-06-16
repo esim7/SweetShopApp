@@ -6,18 +6,18 @@ using Infrastructure.EntityFramework;
 
 namespace Infrastructure.DataBase.Implementations
 {
-    public class ProductsRepository : IRepository<Product>
+    public class CustomerRepository : IRepository<Customer>
     {
         private readonly SweetShopDataContext _context;
 
-        public ProductsRepository()
+        public CustomerRepository()
         {
             _context = new SweetShopDataContext();
         }
 
-        public IList<Product> GetAll()
+        public IList<Customer> GetAll()
         {
-            return _context.Products.ToList();
+            return _context.Customers.ToList();
         }
     }
 }
