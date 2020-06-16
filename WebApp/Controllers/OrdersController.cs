@@ -20,6 +20,7 @@ namespace WebApp.Controllers
             _uow = new EFUnitOfWork();
         }
         public ActionResult Index() => View(_uow.Orders.GetAll());
+
         //private SweetShopDataContext context = new SweetShopDataContext();
 
         //public ActionResult Index() => View(context.Orders.Include(o => o.Customer).ToList());
