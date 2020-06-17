@@ -6,9 +6,11 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using AutoMapper;
 using Domain.Model;
 using Infrastructure.DataBase.Implementations;
 using Infrastructure.EntityFramework;
+using WebApp.Models;
 
 namespace WebApp.Controllers
 {
@@ -20,7 +22,21 @@ namespace WebApp.Controllers
         {
             _uow = new EFUnitOfWork();
         }
-        public ActionResult Index() => View(_uow.Customers.GetAll());
+        public ActionResult Index()
+        {
+            IList<Customer> customers = _uow.Customers.GetAll();
+            IList<CustomerViewModel> customerViewModels = new List<CustomerViewModel>();
+
+            var config = new MapperConfiguration(x =>
+            {
+                x.CreateMap<Customer, CustomerViewModel>();
+            });
+
+            var mapper = config.CreateMapper();
+            var viewModel = mapper.Map<IList<CustomerViewModel>>(customers);
+
+            return View(viewModel);
+        }
         //    private SweetShopDataContext context = new SweetShopDataContext();
 
         //    public ActionResult Index() => View(context.Customers.ToList());

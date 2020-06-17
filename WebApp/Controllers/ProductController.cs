@@ -1,14 +1,17 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using AutoMapper;
 using Domain.Model;
 using Infrastructure.DataBase.Implementations;
 using Infrastructure.DataBase.Interfaces;
 using Infrastructure.EntityFramework;
+using WebApp.Models;
 
 namespace WebApp.Controllers
 {
@@ -19,8 +22,22 @@ namespace WebApp.Controllers
         {
             _uow = new EFUnitOfWork();
         }
-        public ActionResult Index() => View(_uow.Products.GetAll());
 
+        public ActionResult Index() /*=> View(_uow.Products.GetAll());*/
+        {
+            IList<Product> products = _uow.Products.GetAll();
+            IList<ProductViewModel> productViewModels = new List<ProductViewModel>();
+
+            var config = new MapperConfiguration(x =>
+            {
+                x.CreateMap<Product, ProductViewModel>();
+            });
+
+            var mapper = config.CreateMapper();
+            var viewModel = mapper.Map<IList<ProductViewModel>>(products);
+            
+            return View(viewModel);
+        }
         //public ActionResult Details(int? id)
         //{
         //    if (id == null)
