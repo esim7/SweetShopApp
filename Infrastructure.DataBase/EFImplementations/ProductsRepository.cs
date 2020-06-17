@@ -19,5 +19,25 @@ namespace Infrastructure.DataBase.Implementations
         {
             return _context.Products.ToList();
         }
+
+        public void Create(Product item)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Edit(Product item)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Remove(Product item)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public Product Find(int? id)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

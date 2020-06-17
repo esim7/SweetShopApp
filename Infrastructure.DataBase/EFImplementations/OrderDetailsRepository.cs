@@ -19,5 +19,25 @@ namespace Infrastructure.DataBase.Implementations
         {
             return _context.OrderDetails.ToList();
         }
+
+        public void Create(OrderDetail item)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Edit(OrderDetail item)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public void Remove(OrderDetail item)
+        {
+            throw new System.NotImplementedException();
+        }
+
+        public OrderDetail Find(int? id)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

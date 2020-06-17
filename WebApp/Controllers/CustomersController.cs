@@ -11,6 +11,7 @@ using Domain.Model;
 using Infrastructure.DataBase.Implementations;
 using Infrastructure.EntityFramework;
 using WebApp.Models;
+using WebGrease.Css.Extensions;
 
 namespace WebApp.Controllers
 {
@@ -22,114 +23,109 @@ namespace WebApp.Controllers
         {
             _uow = new EFUnitOfWork();
         }
-        public ActionResult Index()
-        {
-            IList<Customer> customers = _uow.Customers.GetAll();
-            IList<CustomerViewModel> customerViewModels = new List<CustomerViewModel>();
 
+        private CustomerViewModel CustomerModelMapper(Customer customer, CustomerViewModel viewModel)
+        {
             var config = new MapperConfiguration(x =>
             {
                 x.CreateMap<Customer, CustomerViewModel>();
             });
 
             var mapper = config.CreateMapper();
-            var viewModel = mapper.Map<IList<CustomerViewModel>>(customers);
-
-            return View(viewModel);
+            return viewModel = mapper.Map<CustomerViewModel>(customer);
         }
-        //    private SweetShopDataContext context = new SweetShopDataContext();
 
-        //    public ActionResult Index() => View(context.Customers.ToList());
+        public ActionResult Index()
+        {
+            IList<Customer> customers = _uow.Customers.GetAll();
+            IList<CustomerViewModel> customerViewModels = new List<CustomerViewModel>();
 
-        //    public ActionResult Details(int? id)
-        //    {
-        //        if (id == null)
-        //        {
-        //            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //        }
-        //        Customer customer = context.Customers.Find(id);
-        //        if (customer == null)
-        //        {
-        //            return HttpNotFound();
-        //        }
-        //        return View(customer);
-        //    }
+            foreach (var element in customers)
+            {
+                customerViewModels.Add(CustomerModelMapper(element, new CustomerViewModel()));
+            }
+            return View(customerViewModels);
+        }
 
-        //    public ActionResult Create() => View();
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Customer customer = _uow.Customers.Find(id);
+            if (customer == null)
+            {
+                return HttpNotFound();
+            }
+            return View(CustomerModelMapper(customer, new CustomerViewModel()));
+        }
 
-        //    [HttpPost]
-        //    [ValidateAntiForgeryToken]
-        //    public ActionResult Create([Bind(Include = "Id,Name,Email,Phone")] Customer customer)
-        //    {
-        //        if (ModelState.IsValid)
-        //        {
-        //            context.Customers.Add(customer);
-        //            context.SaveChanges();
-        //            return RedirectToAction("Index");
-        //        }
+        public ActionResult Create() => View();
 
-        //        return View(customer);
-        //    }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create([Bind(Include = "Id,Name,Email,Phone")] Customer customer)
+        {
+            if (ModelState.IsValid)
+            {
+                _uow.Customers.Create(customer);
+                _uow.Save();
+                return RedirectToAction("Index");
+            }
+            return View();
+        }
 
-        //    public ActionResult Edit(int? id)
-        //    {
-        //        if (id == null)
-        //        {
-        //            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //        }
-        //        Customer customer = context.Customers.Find(id);
-        //        if (customer == null)
-        //        {
-        //            return HttpNotFound();
-        //        }
-        //        return View(customer);
-        //    }
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Customer customer = _uow.Customers.Find(id);
+            if (customer == null)
+            {
+                return HttpNotFound();
+            }
+            return View(CustomerModelMapper(customer, new CustomerViewModel()));
+        }
 
-        //    [HttpPost]
-        //    [ValidateAntiForgeryToken]
-        //    public ActionResult Edit([Bind(Include = "Id,Name,Email,Phone")] Customer customer)
-        //    {
-        //        if (ModelState.IsValid)
-        //        {
-        //            context.Entry(customer).State = EntityState.Modified;
-        //            context.SaveChanges();
-        //            return RedirectToAction("Index");
-        //        }
-        //        return View(customer);
-        //    }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit([Bind(Include = "Id,Name,Email,Phone")] Customer customer)
+        {
+            if (ModelState.IsValid)
+            {
+                _uow.Customers.Edit(customer);
+                _uow.Save();
+                return RedirectToAction("Index");
+            }
+            return View(CustomerModelMapper(customer, new CustomerViewModel()));
+        }
 
-        //    public ActionResult Delete(int? id)
-        //    {
-        //        if (id == null)
-        //        {
-        //            return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //        }
-        //        Customer customer = context.Customers.Find(id);
-        //        if (customer == null)
-        //        {
-        //            return HttpNotFound();
-        //        }
-        //        return View(customer);
-        //    }
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            Customer customer = _uow.Customers.Find(id);
+            if (customer == null)
+            {
+                return HttpNotFound();
+            }
+            return View(CustomerModelMapper(customer, new CustomerViewModel()));
+        }
 
-        //    [HttpPost, ActionName("Delete")]
-        //    [ValidateAntiForgeryToken]
-        //    public ActionResult DeleteConfirmed(int id)
-        //    {
-        //        Customer customer = context.Customers.Find(id);
-        //        context.Customers.Remove(customer);
-        //        context.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-
-        //    protected override void Dispose(bool disposing)
-        //    {
-        //        if (disposing)
-        //        {
-        //            context.Dispose();
-        //        }
-        //        base.Dispose(disposing);
-        //    }
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            Customer customer = _uow.Customers.Find(id);
+            _uow.Customers.Remove(customer);
+            _uow.Save();
+            return RedirectToAction("Index");
+        }
     }
 }
     

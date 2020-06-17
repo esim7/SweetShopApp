@@ -15,11 +15,11 @@ namespace Infrastructure.DataBase.Implementations
 
         public EFUnitOfWork()
         {
+            _context = new SweetShopDataContext();
             Products = new ProductsRepository();
             Orders = new OrderRepository();
             Customers = new CustomerRepository();
             OrderDetails = new OrderDetailsRepository();
-            _context = new SweetShopDataContext();
         }
 
         public void Save()
