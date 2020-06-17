@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using AutoMapper;
 using Domain.Model;
 using Infrastructure.DataBase.Implementations;
+using Infrastructure.DataBase.Interfaces;
 using Infrastructure.EntityFramework;
 using WebApp.Models;
 using WebGrease.Css.Extensions;
@@ -18,10 +19,10 @@ namespace WebApp.Controllers
     public class CustomersController : Controller
     {
 
-        private readonly EFUnitOfWork _uow;
-        public CustomersController()
+        private readonly IUnitOfWork _uow;
+        public CustomersController(IUnitOfWork uow)
         {
-            _uow = new EFUnitOfWork();
+            _uow = uow;
         }
 
         private CustomerViewModel CustomerModelMapper(Customer customer, CustomerViewModel viewModel)

@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using AutoMapper;
 using Domain.Model;
 using Infrastructure.DataBase.Implementations;
+using Infrastructure.DataBase.Interfaces;
 using Infrastructure.EntityFramework;
 using WebApp.Models;
 
@@ -17,10 +18,10 @@ namespace WebApp.Controllers
     public class OrderDetailsController : Controller
     {
 
-        private readonly EFUnitOfWork _uow;
-        public OrderDetailsController()
+        private readonly IUnitOfWork _uow;
+        public OrderDetailsController(IUnitOfWork uow)
         {
-            _uow = new EFUnitOfWork();
+            _uow = uow;
         }
 
         public ActionResult Index() /*=> View(_uow.OrderDetails.GetAll());*/

@@ -13,13 +13,13 @@ namespace Infrastructure.DataBase.Implementations
         public IRepository<Customer> Customers { get; set; }
         public IRepository<OrderDetail> OrderDetails { get; set; }
 
-        public EFUnitOfWork()
+        public EFUnitOfWork(IRepository<Product> products, IRepository<Customer> customers, IRepository<Order> orders, IRepository<OrderDetail> orderDetails)
         {
             _context = new SweetShopDataContext();
-            Products = new ProductsRepository();
-            Orders = new OrderRepository();
-            Customers = new CustomerRepository();
-            OrderDetails = new OrderDetailsRepository();
+            Products = products;
+            Orders = orders;
+            Customers = customers;
+            OrderDetails = orderDetails;
         }
 
         public void Save()
