@@ -1,14 +1,21 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Data.Entity;
 
 namespace Infrastructure.DataBase.Interfaces
 {
-    public interface IRepository<T> where T: class
+    public interface IRepository<T> where T : class
     {
+        T Get(int? id);
+
         IList<T> GetAll();
-        void Create(T item);
-        void Edit(T item);
-        void Remove(T item);
-        T Find(int? id);
+
+        T Create(T entity);
+
+        T Edit(T entity);
+
+        void Remove(T entity);
+
+        DbSet GetAllEntity();
     }
 }

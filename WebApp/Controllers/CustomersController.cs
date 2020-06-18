@@ -12,6 +12,8 @@ using Infrastructure.DataBase.Implementations;
 using Infrastructure.DataBase.Interfaces;
 using Infrastructure.EntityFramework;
 using WebApp.Models;
+using WebApp.Models.Customer;
+using WebApp.Models.Product;
 using WebGrease.Css.Extensions;
 
 namespace WebApp.Controllers
@@ -20,32 +22,18 @@ namespace WebApp.Controllers
     {
 
         private readonly IUnitOfWork _uow;
-        public CustomersController(IUnitOfWork uow)
+        private readonly IMapper _mapper;
+        public CustomersController(IUnitOfWork uow, IMapper mapper)
         {
             _uow = uow;
-        }
-
-        private CustomerViewModel CustomerModelMapper(Customer customer, CustomerViewModel viewModel)
-        {
-            var config = new MapperConfiguration(x =>
-            {
-                x.CreateMap<Customer, CustomerViewModel>();
-            });
-
-            var mapper = config.CreateMapper();
-            return viewModel = mapper.Map<CustomerViewModel>(customer);
+            _mapper = mapper;
         }
 
         public ActionResult Index()
         {
             IList<Customer> customers = _uow.Customers.GetAll();
-            IList<CustomerViewModel> customerViewModels = new List<CustomerViewModel>();
-
-            foreach (var element in customers)
-            {
-                customerViewModels.Add(CustomerModelMapper(element, new CustomerViewModel()));
-            }
-            return View(customerViewModels);
+            var viewModel = _mapper.Map<IList<CustomerViewModel>>(customers);
+            return View(viewModel);
         }
 
         public ActionResult Details(int? id)
@@ -54,22 +42,24 @@ namespace WebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = _uow.Customers.Find(id);
+            Customer customer = _uow.Customers.Get(id);
             if (customer == null)
             {
                 return HttpNotFound();
             }
-            return View(CustomerModelMapper(customer, new CustomerViewModel()));
+            var viewModel = _mapper.Map<CustomerViewModel>(customer);
+            return View(viewModel);
         }
 
         public ActionResult Create() => View();
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "Id,Name,Email,Phone")] Customer customer)
+        public ActionResult Create(CreateCustomerViewModel createCustomerViewModel)
         {
             if (ModelState.IsValid)
             {
+                var customer = _mapper.Map<Customer>(createCustomerViewModel);
                 _uow.Customers.Create(customer);
                 _uow.Save();
                 return RedirectToAction("Index");
@@ -83,25 +73,27 @@ namespace WebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = _uow.Customers.Find(id);
+            Customer customer = _uow.Customers.Get(id);
             if (customer == null)
             {
                 return HttpNotFound();
             }
-            return View(CustomerModelMapper(customer, new CustomerViewModel()));
+            var viewModel = _mapper.Map<EditCustomerViewModel>(customer);
+            return View(viewModel);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "Id,Name,Email,Phone")] Customer customer)
+        public ActionResult Edit(EditCustomerViewModel editCustomerViewModel)
         {
             if (ModelState.IsValid)
             {
+                var customer = _mapper.Map<Customer>(editCustomerViewModel);
                 _uow.Customers.Edit(customer);
                 _uow.Save();
                 return RedirectToAction("Index");
             }
-            return View(CustomerModelMapper(customer, new CustomerViewModel()));
+            return View(editCustomerViewModel);
         }
 
         public ActionResult Delete(int? id)
@@ -110,19 +102,20 @@ namespace WebApp.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Customer customer = _uow.Customers.Find(id);
+            var customer = _uow.Customers.Get(id);
             if (customer == null)
             {
                 return HttpNotFound();
             }
-            return View(CustomerModelMapper(customer, new CustomerViewModel()));
+            var deleteCustomerViewModel = _mapper.Map<DeleteCustomerViewModel>(customer);
+            return View(deleteCustomerViewModel);
         }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Customer customer = _uow.Customers.Find(id);
+            var customer = _uow.Customers.Get(id);
             _uow.Customers.Remove(customer);
             _uow.Save();
             return RedirectToAction("Index");

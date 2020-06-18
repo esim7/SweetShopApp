@@ -1,6 +1,7 @@
-﻿using Domain.Model;
+﻿using WebApp.Models.Order;
+using WebApp.Models.Product;
 
-namespace WebApp.Models
+namespace WebApp.Models.OrderDetail
 {
     public class OrderDetailsViewModel
     {

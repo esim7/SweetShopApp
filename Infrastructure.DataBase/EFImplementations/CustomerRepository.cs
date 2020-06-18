@@ -11,9 +11,14 @@ namespace Infrastructure.DataBase.Implementations
     {
         private readonly SweetShopDataContext _context;
 
-        public CustomerRepository()
+        public CustomerRepository(SweetShopDataContext context)
         {
-            _context = new SweetShopDataContext();
+            _context = context;
+        }
+
+        public Customer Get(int? id)
+        {
+            return _context.Customers.Find(id);
         }
 
         public IList<Customer> GetAll()
@@ -21,24 +26,33 @@ namespace Infrastructure.DataBase.Implementations
             return _context.Customers.ToList();
         }
 
-        public void Create(Customer item)
+        public Customer Create(Customer entity)
         {
-            _context.Customers.Add(item);
+            var customer = _context.Customers.Add(entity);
+            return customer;
         }
 
-        public void Edit(Customer item)
+        public Customer Edit(Customer entity)
         {
-            _context.Entry(item).State = EntityState.Modified;
+            var customer = _context.Customers.Find(entity.Id);
+            if (customer != null)
+            {
+                customer.Name = entity.Name;
+                customer.Email = entity.Email;
+                customer.Phone = entity.Phone;
+            }
+            return customer;
         }
 
-        public void Remove(Customer item)
+        public void Remove(Customer entity)
         {
-            _context.Customers.Remove(item);
+            _context.Customers.Remove(entity);
         }
 
-        public Customer Find(int? id)
+        public DbSet GetAllEntity()
         {
-            return _context.Customers.FirstOrDefault(c => c.Id == id);
+            return _context.Customers;
         }
+
     }
 }

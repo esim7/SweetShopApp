@@ -13,9 +13,9 @@ namespace Infrastructure.DataBase.Implementations
         public IRepository<Customer> Customers { get; set; }
         public IRepository<OrderDetail> OrderDetails { get; set; }
 
-        public EFUnitOfWork(IRepository<Product> products, IRepository<Customer> customers, IRepository<Order> orders, IRepository<OrderDetail> orderDetails)
+        public EFUnitOfWork(IRepository<Product> products, IRepository<Customer> customers, IRepository<Order> orders, IRepository<OrderDetail> orderDetails, SweetShopDataContext context)
         {
-            _context = new SweetShopDataContext();
+            _context = context;
             Products = products;
             Orders = orders;
             Customers = customers;

@@ -12,6 +12,7 @@ using Infrastructure.DataBase.Implementations;
 using Infrastructure.DataBase.Interfaces;
 using Infrastructure.EntityFramework;
 using WebApp.Models;
+using WebApp.Models.OrderDetail;
 
 namespace WebApp.Controllers
 {
@@ -19,130 +20,117 @@ namespace WebApp.Controllers
     {
 
         private readonly IUnitOfWork _uow;
-        public OrderDetailsController(IUnitOfWork uow)
+        private readonly IMapper _mapper;
+        public OrderDetailsController(IUnitOfWork uow, IMapper mapper)
         {
             _uow = uow;
+            _mapper = mapper;
         }
 
-        public ActionResult Index() /*=> View(_uow.OrderDetails.GetAll());*/
+        public ActionResult Index()
         {
-            
+
             IList<OrderDetail> orderDetails = _uow.OrderDetails.GetAll();
-            IList<OrderDetailsViewModel> orderDetailsViewModels = new List<OrderDetailsViewModel>();
-
-            var config = new MapperConfiguration(x =>
-            {
-                x.CreateMap<OrderDetail, OrderDetailsViewModel>();
-            });
-
-            var mapper = config.CreateMapper();
-            var viewModel = mapper.Map<IList<OrderDetailsViewModel>>(orderDetails);
-
+            var viewModel = _mapper.Map<IList<OrderDetailsViewModel>>(orderDetails);
             return View(viewModel);
-            
         }
-        //private SweetShopDataContext context = new SweetShopDataContext();
 
-        //public ActionResult Index() => View(context.OrderDetails.Include(o => o.Order).Include(o => o.Product).ToList());
+        public ActionResult Details(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
 
-        //public ActionResult Details(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    OrderDetail orderDetail = context.OrderDetails.Include(o => o.Product).Include(x => x.Order).FirstOrDefault(s => s.Id == id);
-        //    if (orderDetail == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(orderDetail);
-        //}
+            var orderDetail = _uow.OrderDetails.Get(id);
+            if (orderDetail == null)
+            {
+                return HttpNotFound();
+            }
+            var viewModel = _mapper.Map<OrderDetailsViewModel>(orderDetail);
+            return View(viewModel);
+        }
 
-        //public ActionResult Create()
-        //{
-        //    ViewBag.OrderId = new SelectList(context.Orders, "Id", "Id");
-        //    ViewBag.ProductId = new SelectList(context.Products, "Id", "Title");
-        //    return View();
-        //}
+        public ActionResult Create()
+        {
+            ViewBag.OrderId = new SelectList(_uow.Orders.GetAllEntity(), "Id", "Id");
+            ViewBag.ProductId = new SelectList(_uow.Products.GetAllEntity(), "Id", "Title");
+            return View();
+        }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Create([Bind(Include = "Id,ProductId,Quantity,OrderId")] OrderDetail orderDetail)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        context.OrderDetails.Add(orderDetail);
-        //        context.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-        //    ViewBag.OrderId = new SelectList(context.Orders, "Id", "Id", orderDetail.OrderId);
-        //    ViewBag.ProductId = new SelectList(context.Products, "Id", "Title", orderDetail.ProductId);
-        //    return View(orderDetail);
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Create(CreateOrderDetailsViewModel createOrderDetailsViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var orderDetail = _mapper.Map<OrderDetail>(createOrderDetailsViewModel);
+                _uow.OrderDetails.Create(orderDetail);
+                _uow.Save();
+                return RedirectToAction("Index");
+            }
+            ViewBag.OrderId = new SelectList(_uow.Orders.GetAllEntity(), "Id", "Id", createOrderDetailsViewModel.OrderId);
+            ViewBag.ProductId = new SelectList(_uow.Products.GetAllEntity(), "Id", "Title", createOrderDetailsViewModel.ProductId);
+            return View(createOrderDetailsViewModel);
+        }
 
-        //public ActionResult Edit(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    OrderDetail orderDetail = context.OrderDetails.Find(id);
-        //    if (orderDetail == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    ViewBag.OrderId = new SelectList(context.Orders, "Id", "Id", orderDetail.OrderId);
-        //    ViewBag.ProductId = new SelectList(context.Products, "Id", "Title", orderDetail.ProductId);
-        //    return View(orderDetail);
-        //}
+        public ActionResult Edit(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var orderDetail = _uow.OrderDetails.Get(id);
+            if (orderDetail == null)
+            {
+                return HttpNotFound();
+            }
+            var view = _mapper.Map<EditOrderDetailsViewModel>(orderDetail);
+            ViewBag.OrderId = new SelectList(_uow.Orders.GetAllEntity(), "Id", "Id", view.OrderId);
+            ViewBag.ProductId = new SelectList(_uow.Products.GetAllEntity(), "Id", "Title", view.ProductId);
+            return View(view);
+        }
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult Edit([Bind(Include = "Id,ProductId,Quantity,OrderId")] OrderDetail orderDetail)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        context.Entry(orderDetail).State = EntityState.Modified;
-        //        context.SaveChanges();
-        //        return RedirectToAction("Index");
-        //    }
-        //    ViewBag.OrderId = new SelectList(context.Orders, "Id", "Id", orderDetail.OrderId);
-        //    ViewBag.ProductId = new SelectList(context.Products, "Id", "Title", orderDetail.ProductId);
-        //    return View(orderDetail);
-        //}
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(EditOrderDetailsViewModel editOrderDetailsViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                var orderDetail = _mapper.Map<OrderDetail>(editOrderDetailsViewModel);
+                _uow.OrderDetails.Edit(orderDetail);
+                _uow.Save();
+                return RedirectToAction("Index");
+            }
+            ViewBag.OrderId = new SelectList(_uow.Orders.GetAllEntity(), "Id", "Id", editOrderDetailsViewModel.OrderId);
+            ViewBag.ProductId = new SelectList(_uow.Products.GetAllEntity(), "Id", "Title", editOrderDetailsViewModel.ProductId);
+            return View(editOrderDetailsViewModel);
+        }
 
-        //public ActionResult Delete(int? id)
-        //{
-        //    if (id == null)
-        //    {
-        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-        //    }
-        //    OrderDetail orderDetail = context.OrderDetails.Find(id);
-        //    if (orderDetail == null)
-        //    {
-        //        return HttpNotFound();
-        //    }
-        //    return View(orderDetail);
-        //}
+        public ActionResult Delete(int? id)
+        {
+            if (id == null)
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            }
+            var orderDetail = _uow.OrderDetails.Get(id);
+            if (orderDetail == null)
+            {
+                return HttpNotFound();
+            }
 
-        //[HttpPost, ActionName("Delete")]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult DeleteConfirmed(int id)
-        //{
-        //    OrderDetail orderDetail = context.OrderDetails.Find(id);
-        //    context.OrderDetails.Remove(orderDetail);
-        //    context.SaveChanges();
-        //    return RedirectToAction("Index");
-        //}
+            var view = _mapper.Map<DeleteOrderDetailsViewModel>(orderDetail);
+            return View(view);
+        }
 
-        //protected override void Dispose(bool disposing)
-        //{
-        //    if (disposing)
-        //    {
-        //        context.Dispose();
-        //    }
-        //    base.Dispose(disposing);
-        //}
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            var orderDetail = _uow.OrderDetails.Get(id);
+            _uow.OrderDetails.Remove(orderDetail);
+            _uow.Save();
+            return RedirectToAction("Index");
+        }
     }
 }

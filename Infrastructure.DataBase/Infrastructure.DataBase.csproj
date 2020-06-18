@@ -58,7 +58,7 @@
     <Compile Include="EFImplementations\OrderDetailsRepository.cs" />
     <Compile Include="EFImplementations\OrderRepository.cs" />
     <Compile Include="EFImplementations\ProductsRepository.cs" />
-    <Compile Include="EFImplementations\UnitOfWork.cs" />
+    <Compile Include="EFImplementations\EFUnitOfWork.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
-using Domain.Model;
+using WebApp.Models.Order;
 
-namespace WebApp.Models
+namespace WebApp.Models.Customer
 {
     public class CustomerViewModel
     {

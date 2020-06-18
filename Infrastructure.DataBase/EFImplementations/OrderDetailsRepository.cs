@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using Domain.Model;
 using Infrastructure.DataBase.Interfaces;
@@ -10,9 +11,14 @@ namespace Infrastructure.DataBase.Implementations
     {
         private readonly SweetShopDataContext _context;
 
-        public OrderDetailsRepository()
+        public OrderDetailsRepository(SweetShopDataContext context)
         {
-            _context = new SweetShopDataContext();
+            _context = context;
+        }
+
+        public OrderDetail Get(int? id)
+        {
+            return _context.OrderDetails.Find(id);
         }
 
         public IList<OrderDetail> GetAll()
@@ -20,24 +26,32 @@ namespace Infrastructure.DataBase.Implementations
             return _context.OrderDetails.ToList();
         }
 
-        public void Create(OrderDetail item)
+        public OrderDetail Create(OrderDetail entity)
         {
-            throw new System.NotImplementedException();
+            var orderDetail = _context.OrderDetails.Add(entity);
+            return orderDetail;
         }
 
-        public void Edit(OrderDetail item)
+        public OrderDetail Edit(OrderDetail entity)
         {
-            throw new System.NotImplementedException();
+            var orderDetail = _context.OrderDetails.Find(entity.Id);
+            if (orderDetail != null)
+            {
+                orderDetail.ProductId = entity.ProductId;
+                orderDetail.Quantity = entity.Quantity;
+                orderDetail.OrderId = entity.OrderId;
+            }
+            return orderDetail;
         }
 
-        public void Remove(OrderDetail item)
+        public void Remove(OrderDetail entity)
         {
-            throw new System.NotImplementedException();
+            _context.OrderDetails.Remove(entity);
         }
 
-        public OrderDetail Find(int? id)
+        public DbSet GetAllEntity()
         {
-            throw new System.NotImplementedException();
+            return _context.OrderDetails;
         }
     }
 }

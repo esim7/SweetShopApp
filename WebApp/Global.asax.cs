@@ -25,7 +25,8 @@ namespace WebApp
             {
                 new RepositoryModule(),
                 new MapperModule(),
-                new UnitOfWorkModule()
+                new UnitOfWorkModule(),
+                new DataContextModule(), 
             };
 
             var kernel = new StandardKernel(modules); // регистрация в ядре (kernel) всех модулей

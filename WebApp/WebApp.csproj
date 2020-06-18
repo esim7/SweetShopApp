@@ -151,10 +151,23 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\CustomerViewModel.cs" />
-    <Compile Include="Models\OrderDetailsViewModel.cs" />
-    <Compile Include="Models\OrderViewModel.cs" />
-    <Compile Include="Models\ProductViewModel.cs" />
+    <Compile Include="Models\Customer\CreateCustomerViewModel.cs" />
+    <Compile Include="Models\Customer\CustomerViewModel.cs" />
+    <Compile Include="Models\Customer\DeleteCustomerViewModel.cs" />
+    <Compile Include="Models\Customer\EditCustomerViewModel.cs" />
+    <Compile Include="Models\OrderDetail\CreateOrderDetailsViewModel.cs" />
+    <Compile Include="Models\OrderDetail\DeleteOrderDetailsViewModel.cs" />
+    <Compile Include="Models\OrderDetail\EditOrderDetailsViewModel.cs" />
+    <Compile Include="Models\OrderDetail\OrderDetailsViewModel.cs" />
+    <Compile Include="Models\Order\CreateOrderViewModel.cs" />
+    <Compile Include="Models\Order\DeleteOrderViewModel.cs" />
+    <Compile Include="Models\Order\EditOrderViewModel.cs" />
+    <Compile Include="Models\Order\OrderViewModel.cs" />
+    <Compile Include="Models\Product\CreateProductViewModel.cs" />
+    <Compile Include="Models\Product\DeleteProductViewModel.cs" />
+    <Compile Include="Models\Product\EditProductViewModel.cs" />
+    <Compile Include="Models\Product\ProductViewModel.cs" />
+    <Compile Include="NinjectModules\DataContextModule.cs" />
     <Compile Include="NinjectModules\MapperModule.cs" />
     <Compile Include="NinjectModules\RepositoryModule.cs" />
     <Compile Include="NinjectModules\UnitOfWorkModule.cs" />
@@ -196,11 +209,11 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Product\Index.cshtml" />
-    <Content Include="Views\Product\Details.cshtml" />
-    <Content Include="Views\Product\Create.cshtml" />
-    <Content Include="Views\Product\Edit.cshtml" />
-    <Content Include="Views\Product\Delete.cshtml" />
+    <Content Include="Views\Products\Index.cshtml" />
+    <Content Include="Views\Products\Details.cshtml" />
+    <Content Include="Views\Products\Create.cshtml" />
+    <Content Include="Views\Products\Edit.cshtml" />
+    <Content Include="Views\Products\Delete.cshtml" />
     <Content Include="Views\Customers\Index.cshtml" />
     <Content Include="Views\Customers\Details.cshtml" />
     <Content Include="Views\Customers\Create.cshtml" />

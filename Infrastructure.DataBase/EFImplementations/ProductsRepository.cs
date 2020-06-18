@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using Domain.Model;
 using Infrastructure.DataBase.Interfaces;
@@ -10,9 +11,14 @@ namespace Infrastructure.DataBase.Implementations
     {
         private readonly SweetShopDataContext _context;
 
-        public ProductsRepository()
+        public ProductsRepository(SweetShopDataContext context)
         {
-            _context = new SweetShopDataContext();
+            _context = context;
+        }
+
+        public Product Get(int? id)
+        {
+            return _context.Products.Find(id);
         }
 
         public IList<Product> GetAll()
@@ -20,24 +26,31 @@ namespace Infrastructure.DataBase.Implementations
             return _context.Products.ToList();
         }
 
-        public void Create(Product item)
+        public Product Create(Product entity)
         {
-            throw new System.NotImplementedException();
+            var product = _context.Products.Add(entity);
+            return product;
         }
 
-        public void Edit(Product item)
+        public Product Edit(Product entity)
         {
-            throw new System.NotImplementedException();
+            var product = _context.Products.Find(entity.Id);
+            if (product != null)
+            {
+                product.Price = entity.Price;
+                product.Title = entity.Title;
+            }
+            return product;
         }
 
-        public void Remove(Product item)
+        public void Remove(Product entity)
         {
-            throw new System.NotImplementedException();
+            _context.Products.Remove(entity);
         }
 
-        public Product Find(int? id)
+        public DbSet GetAllEntity()
         {
-            throw new System.NotImplementedException();
+            return _context.Products;
         }
     }
 }
