@@ -1,83 +1,50 @@
-﻿@model IEnumerable<WebApp.Models.Product.ProductViewModel>
+﻿@using Antlr.Runtime.Tree
+@model IEnumerable<WebApp.Models.Product.ProductViewModel>
 
 @{
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h2>Каталог продукции</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
 </p>
 
-@*<table class="table table-hover">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Title)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Price)
-        </th>
-        <th>
-            Action
-        </th>
-    </tr>
-
-    @foreach (var item in Model)
-    {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-
-            <td>
-                @Html.DisplayFor(modelItem => item.Price)
-            </td>
-
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
-    }
-
-</table>*@
 
 <div class="row">
     @foreach (var item in Model)
     {
-    <div class="col-sm-3 mb-4">
-        <img src="https://retail-loyalty.org/upload/iblock/a9d/31c5dd4208e9833b56ea01d6c744d282.jpg" class="card-img-top" alt="">
-        <div class="card">
-            <div class="card-body">
-                <h5 class="card-title">@item.Title</h5>
-                <p class="card-text">@item.Price</p>
-                <a href="#" class="btn btn-primary">Купить</a>
-                @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+        <div class="col-sm-3 mb-4">
+            <img src="https://retail-loyalty.org/upload/iblock/a9d/31c5dd4208e9833b56ea01d6c744d282.jpg" class="card-img-top" alt="">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">@item.Title</h5>
+                    <p class="card-text">@item.Price</p>
+                    @Html.ActionLink("Купить", "Buy", new { id = item.Id }, new { @class = "btn btn-outline-info" })
+                    <div class="dropdown mt-4">
+                        <button class="btn btn-outline-info dropdown-toggle" type="button" id="dropdownMenu2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            Operations
+                        </button>
+                        <div class="dropdown-menu text-center" aria-labelledby="dropdownMenu2">
+                            @Html.ActionLink("Edit", "Edit", new { id = item.Id }, new { @class = "btn btn-outline-info mb-1 mt-1 " })
+                            <br />
+                            @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = "btn btn-outline-info mb-1 mt-1 " })
+                            <br />
+                            @Html.ActionLink("Delete", "Delete", new { id = item.Id }, new { @class = "btn btn-outline-info mb-1 mt-1 " })
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
     }
-    @*<div class="col-sm-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Специальный заголовок</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary">Переход куда-нибудь</a>
-                </div>
-            </div>
-        </div>
-        <div class="col-sm-6">
-            <div class="card">
-                <div class="card-body">
-                    <h5 class="card-title">Специальный заголовок</h5>
-                    <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                    <a href="#" class="btn btn-primary">Переход куда-нибудь</a>
-                </div>
-            </div>
-        </div>*@
 </div>
+
+@section scripts
+{
+<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+}
+
 

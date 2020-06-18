@@ -151,7 +151,6 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Buy\BuyProductViewModel.cs" />
     <Compile Include="Models\Customer\CreateCustomerViewModel.cs" />
     <Compile Include="Models\Customer\CustomerViewModel.cs" />
     <Compile Include="Models\Customer\DeleteCustomerViewModel.cs" />
@@ -164,6 +163,7 @@
     <Compile Include="Models\Order\DeleteOrderViewModel.cs" />
     <Compile Include="Models\Order\EditOrderViewModel.cs" />
     <Compile Include="Models\Order\OrderViewModel.cs" />
+    <Compile Include="Models\Product\BuyProductViewModel.cs" />
     <Compile Include="Models\Product\CreateProductViewModel.cs" />
     <Compile Include="Models\Product\DeleteProductViewModel.cs" />
     <Compile Include="Models\Product\EditProductViewModel.cs" />

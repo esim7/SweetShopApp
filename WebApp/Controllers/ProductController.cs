@@ -8,9 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using AutoMapper;
 using Domain.Model;
-
 using Infrastructure.DataBase.Interfaces;
-using WebApp.Models;
 using WebApp.Models.Product;
 
 
@@ -122,9 +120,53 @@ namespace WebApp.Controllers
             return RedirectToAction("Index");
         }
 
-        //public ActionResult Buy(int? id)
-        //{
-        //    return View(editProductViewModel);
-        //}
+        public ActionResult Buy(int? id)
+        {
+            if (id == null || id == 0)
+                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            var product = _uow.Products.Get((int)id);
+
+            if (product == null)
+                return HttpNotFound("Product not found!");
+
+            var buyProductViewModel = _mapper.Map<BuyProductViewModel>(product);
+
+            return View(buyProductViewModel);
+        }
+
+        [HttpPost]
+        public ActionResult Buy(BuyProductViewModel buyProductViewModel)
+        {
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    var totalPrice = buyProductViewModel.Price * buyProductViewModel.Quantity;
+
+                    var order = new Order { CustomerId = 2005 };
+                    if (totalPrice != null) order.TotalPrice = (decimal)totalPrice;
+
+                    var createdOrder = _uow.Orders.Create(order);
+                    _uow.Save();
+
+                    OrderDetail detail = new OrderDetail();
+                    detail.OrderId = createdOrder.Id;
+                    detail.ProductId = (int)buyProductViewModel.Id;
+                    detail.Quantity = (int)buyProductViewModel.Quantity;
+
+                    _uow.OrderDetails.Create(detail);
+                    _uow.Save();
+                }
+                catch (Exception)
+                {
+                    return View(buyProductViewModel);
+                }
+
+                return RedirectToAction("Index");
+
+            }
+
+            return View(buyProductViewModel);
+        }
     }
 }

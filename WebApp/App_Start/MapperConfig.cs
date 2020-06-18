@@ -23,6 +23,8 @@ namespace WebApp
                 cfg.CreateMap<Product, CreateProductViewModel>();
                 cfg.CreateMap<CreateProductViewModel, Product>();
 
+                cfg.CreateMap<Product, BuyProductViewModel>();
+
                 cfg.CreateMap<OrderDetail, OrderDetailsViewModel>();
                 cfg.CreateMap<OrderDetailsViewModel, OrderDetail>();
                 cfg.CreateMap<OrderDetail, EditOrderDetailsViewModel>();
@@ -52,7 +54,6 @@ namespace WebApp
             });
 
             var mapper = config.CreateMapper();
-
             return mapper;
         }
     }
