@@ -121,5 +121,10 @@ namespace WebApp.Controllers
             _uow.Save();
             return RedirectToAction("Index");
         }
+
+        //public ActionResult Buy(int? id)
+        //{
+        //    return View(editProductViewModel);
+        //}
     }
 }
