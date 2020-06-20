@@ -53,8 +53,8 @@ namespace WebApp.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.OrderId = new SelectList(_uow.Orders.GetAllEntity(), "Id", "Id");
-            ViewBag.ProductId = new SelectList(_uow.Products.GetAllEntity(), "Id", "Title");
+            ViewBag.OrderId = new SelectList(_uow.Orders.GetAll(), "Id", "Id");
+            ViewBag.ProductId = new SelectList(_uow.Products.GetAll(), "Id", "Title");
             return View();
         }
 
@@ -69,8 +69,8 @@ namespace WebApp.Controllers
                 _uow.Save();
                 return RedirectToAction("Index");
             }
-            ViewBag.OrderId = new SelectList(_uow.Orders.GetAllEntity(), "Id", "Id", createOrderDetailsViewModel.OrderId);
-            ViewBag.ProductId = new SelectList(_uow.Products.GetAllEntity(), "Id", "Title", createOrderDetailsViewModel.ProductId);
+            ViewBag.OrderId = new SelectList(_uow.Orders.GetAll(), "Id", "Id", createOrderDetailsViewModel.OrderId);
+            ViewBag.ProductId = new SelectList(_uow.Products.GetAll(), "Id", "Title", createOrderDetailsViewModel.ProductId);
             return View(createOrderDetailsViewModel);
         }
 
@@ -86,8 +86,8 @@ namespace WebApp.Controllers
                 return HttpNotFound();
             }
             var view = _mapper.Map<EditOrderDetailsViewModel>(orderDetail);
-            ViewBag.OrderId = new SelectList(_uow.Orders.GetAllEntity(), "Id", "Id", view.OrderId);
-            ViewBag.ProductId = new SelectList(_uow.Products.GetAllEntity(), "Id", "Title", view.ProductId);
+            ViewBag.OrderId = new SelectList(_uow.Orders.GetAll(), "Id", "Id", view.OrderId);
+            ViewBag.ProductId = new SelectList(_uow.Products.GetAll(), "Id", "Title", view.ProductId);
             return View(view);
         }
 
@@ -102,8 +102,8 @@ namespace WebApp.Controllers
                 _uow.Save();
                 return RedirectToAction("Index");
             }
-            ViewBag.OrderId = new SelectList(_uow.Orders.GetAllEntity(), "Id", "Id", editOrderDetailsViewModel.OrderId);
-            ViewBag.ProductId = new SelectList(_uow.Products.GetAllEntity(), "Id", "Title", editOrderDetailsViewModel.ProductId);
+            ViewBag.OrderId = new SelectList(_uow.Orders.GetAll(), "Id", "Id", editOrderDetailsViewModel.OrderId);
+            ViewBag.ProductId = new SelectList(_uow.Products.GetAll(), "Id", "Title", editOrderDetailsViewModel.ProductId);
             return View(editOrderDetailsViewModel);
         }
 

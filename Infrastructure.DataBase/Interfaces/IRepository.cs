@@ -15,7 +15,5 @@ namespace Infrastructure.DataBase.Interfaces
         T Edit(T entity);
 
         void Remove(T entity);
-
-        DbSet GetAllEntity();
     }
 }

@@ -54,7 +54,7 @@ namespace WebApp.Controllers
 
         public ActionResult Create()
         {
-            ViewBag.CustomerId = new SelectList(_uow.Customers.GetAllEntity(), "Id", "Name");
+            ViewBag.CustomerId = new SelectList(_uow.Customers.GetAll(), "Id", "Name");
             return View();
         }
 
@@ -69,7 +69,7 @@ namespace WebApp.Controllers
                 _uow.Save();
                 return RedirectToAction("Index");
             }
-            ViewBag.CustomerId = new SelectList(_uow.Customers.GetAllEntity(), "Id", "Name", createOrderView.CustomerId);
+            ViewBag.CustomerId = new SelectList(_uow.Customers.GetAll(), "Id", "Name", createOrderView.CustomerId);
             return View(createOrderView);
         }
 
@@ -85,7 +85,7 @@ namespace WebApp.Controllers
                 return HttpNotFound();
             }
             var editOrderViewModel = _mapper.Map<EditOrderViewModel>(order);
-            ViewBag.CustomerId = new SelectList(_uow.Customers.GetAllEntity(), "Id", "Name", editOrderViewModel.CustomerId);
+            ViewBag.CustomerId = new SelectList(_uow.Customers.GetAll(), "Id", "Name", editOrderViewModel.CustomerId);
             return View(editOrderViewModel);
         }
 
@@ -100,7 +100,7 @@ namespace WebApp.Controllers
                 _uow.Save();
                 return RedirectToAction("Index");
             }
-            ViewBag.CustomerId = new SelectList(_uow.Customers.GetAllEntity(), "Id", "Name", editOrderViewModel.CustomerId);
+            ViewBag.CustomerId = new SelectList(_uow.Customers.GetAll(), "Id", "Name", editOrderViewModel.CustomerId);
             return View(editOrderViewModel);
         }
 
