@@ -23,7 +23,7 @@ namespace Infrastructure.DataBase.Implementations
 
         public IList<Customer> GetAll()
         {
-            return _context.Customers.ToList();
+            return _context.Customers.Include(o => o.Orders).ToList();
         }
 
         public Customer Create(Customer entity)
