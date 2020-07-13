@@ -27,7 +27,7 @@ namespace WebApp.Controllers
 
         public ActionResult Index()
         {
-            IList<Product> products = _uow.Products.GetAll();
+            var products = _uow.Products.GetAll();
             var viewModel = _mapper.Map<IList<ProductViewModel>>(products);
 
             return View(viewModel);

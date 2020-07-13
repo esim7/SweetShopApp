@@ -17,7 +17,6 @@ namespace Infrastructure.EntityFramework
 
         public SweetShopDataContext() : base("name=SweetShopConnectionString")
         {
-
         }
     }
 

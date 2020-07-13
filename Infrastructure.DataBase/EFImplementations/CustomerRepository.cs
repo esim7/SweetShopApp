@@ -18,12 +18,12 @@ namespace Infrastructure.DataBase.Implementations
 
         public Customer Get(int? id)
         {
-            return _context.Customers.Find(id);
+            return _context.Customers.Include(c => c.Orders).FirstOrDefault(c => c.Id == id);
         }
 
-        public IList<Customer> GetAll()
+        public IQueryable<Customer> GetAll()
         {
-            return _context.Customers.Include(o => o.Orders).ToList();
+            return _context.Customers.Include(c => c.Orders);
         }
 
         public Customer Create(Customer entity)

@@ -21,9 +21,9 @@ namespace Infrastructure.DataBase.Implementations
             return _context.Products.Find(id);
         }
 
-        public IList<Product> GetAll()
+        public IQueryable<Product> GetAll()
         {
-            return _context.Products.ToList();
+            return _context.Products;
         }
 
         public Product Create(Product entity)

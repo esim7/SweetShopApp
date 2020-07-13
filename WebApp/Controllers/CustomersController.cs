@@ -31,7 +31,7 @@ namespace WebApp.Controllers
 
         public ActionResult Index()
         {
-            IList<Customer> customers = _uow.Customers.GetAll();
+            var customers = _uow.Customers.GetAll();
             var viewModel = _mapper.Map<IList<CustomerViewModel>>(customers);
             return View(viewModel);
         }

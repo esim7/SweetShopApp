@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Data.Entity;
+using System.Linq;
 
 namespace Infrastructure.DataBase.Interfaces
 {
@@ -8,7 +9,7 @@ namespace Infrastructure.DataBase.Interfaces
     {
         T Get(int? id);
 
-        IList<T> GetAll();
+        IQueryable<T> GetAll();
 
         T Create(T entity);
 

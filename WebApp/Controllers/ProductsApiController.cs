@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Description;
 using Domain.Model;
 using Infrastructure.DataBase.Implementations;
 using Infrastructure.DataBase.Interfaces;
@@ -27,32 +30,66 @@ namespace WebApp.Controllers
         }
 
         // GET: api/ProductsApi/5
-        public Product Get(int id)
+        [ResponseType(typeof(Product))]
+        public IHttpActionResult GetProduct(int id)
         {
-            return _uow.Products.Get(id);
+            var product = _uow.Products.Get(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+            return Ok(product);
         }
 
         // POST: api/ProductsApi
-        public Product Post([FromBody] Product product)
+        [ResponseType(typeof(Product))]
+        public IHttpActionResult PostProduct(Product product)
         {
-            var savedProduct = _uow.Products.Create(product);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _uow.Products.Create(product);
             _uow.Save();
-            return savedProduct;
+
+            return CreatedAtRoute("DefaultApi", new { id = product.Id }, product);
         }
 
         // PUT: api/ProductsApi/5
-        public Product Put(/*int id, [FromBody]*/Product product)
+        [ResponseType(typeof(void))]
+        public IHttpActionResult PutProduct(int id, Product product)
         {
-            var changedProduct = _uow.Products.Edit(product);
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            if (id != product.Id)
+            {
+                return BadRequest();
+            }
+
+            _uow.Products.Edit(product);
             _uow.Save();
-            return changedProduct;
+
+            return StatusCode(HttpStatusCode.NoContent);
         }
 
         // DELETE: api/ProductsApi/5
-        public void Delete(Product product)
+        [ResponseType(typeof(Product))]
+        public IHttpActionResult DeleteProduct(int id)
         {
+            var product = _uow.Products.Get(id);
+            if (product == null)
+            {
+                return NotFound();
+            }
+
             _uow.Products.Remove(product);
             _uow.Save();
+
+            return Ok(product);
         }
     }
 }

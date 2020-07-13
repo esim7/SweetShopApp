@@ -18,12 +18,12 @@ namespace Infrastructure.DataBase.Implementations
 
         public OrderDetail Get(int? id)
         {
-            return _context.OrderDetails.Find(id);
+            return _context.OrderDetails.Include(c => c.Order).Include(p=>p.Product).FirstOrDefault(c => c.Id == id);
         }
 
-        public IList<OrderDetail> GetAll()
+        public IQueryable<OrderDetail> GetAll()
         {
-            return _context.OrderDetails.Include(o => o.Order).Include(o => o.Product).ToList();
+            return _context.OrderDetails.Include(o => o.Order).Include(p => p.Product);
         }
 
         public OrderDetail Create(OrderDetail entity)
@@ -37,9 +37,7 @@ namespace Infrastructure.DataBase.Implementations
             var orderDetail = _context.OrderDetails.Find(entity.Id);
             if (orderDetail != null)
             {
-                orderDetail.ProductId = entity.ProductId;
                 orderDetail.Quantity = entity.Quantity;
-                orderDetail.OrderId = entity.OrderId;
             }
             return orderDetail;
         }

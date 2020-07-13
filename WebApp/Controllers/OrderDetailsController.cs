@@ -30,7 +30,7 @@ namespace WebApp.Controllers
         public ActionResult Index()
         {
 
-            IList<OrderDetail> orderDetails = _uow.OrderDetails.GetAll();
+            var orderDetails = _uow.OrderDetails.GetAll();
             var viewModel = _mapper.Map<IList<OrderDetailsViewModel>>(orderDetails);
             return View(viewModel);
         }

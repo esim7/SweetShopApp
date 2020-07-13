@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
+using Newtonsoft.Json;
 
 namespace Domain.Model
 {
-    //[Serializable]
-    //[DataContract(IsReference = true)]
-    
+    [Serializable]
+    [DataContract(IsReference = true)]
     public class Order
     {
         public int Id { get; set; }
